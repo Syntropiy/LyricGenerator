@@ -30,6 +30,10 @@ Anyways this will be my little ongoing pet for a bit, gl getting it to work if y
 
 For a little sneaksies peaksies at what's coming up, here's my todo list:
 
+Known bugs:
+- When selecting songs, the draw() function freezes for a few seconds, longer the bigger the music file. It's supposed to keep working and the songInfo function to handle the unloaded bits of song data on its own with a little loading... animation, but instead the program appears to just freeze until the song is fully loaded.
+- When lyric-ing songs out of order, the menu displaying available songs will just not display a button where the last song was - so the list doesn't get shorter, it just gets holes in it
+
 todo (in order of doing):
 Add volume slider to upper right corner - make it live interactable
 Change esc from quit to pause
