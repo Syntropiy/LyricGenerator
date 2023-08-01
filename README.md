@@ -10,6 +10,11 @@ Controls:
 ENTER = Advance to next lyric [if lyrics are selected]
 ESC = Exit the program at any time [must not be tapped but truely pressed, key detection is a bit janky]
 
+Use the volume slider like a volume slider to slide the volume to a different volume yk? like how it works in most programs
+Click the button on the lower right to open the options menu, which has all of the options! Currently in the options you can:
+> Disable or enable automatic archiving of .txt files once a .lrc file is generated
+aaaand that's it!
+
 When starting the program, select the directory of your song files you would like to have lyrics. This directory must include .txt files with names that match those of the corresponding song, and the songs must be in .mp3 format for now (if you gotta change it, just edit the code tbh find+replace 'mp3' with 'wav' or smthn). 
 Then, the program gives you a list of songs in that directory - it only displays songs that it recognizes also have lyrics. Make sure though that these files do only have lyrics in them, no other junk. Each new lyric should be separated by a line break.
 
@@ -30,33 +35,32 @@ Anyways this will be my little ongoing pet for a bit, gl getting it to work if y
 
 For a little sneaksies peaksies at what's coming up, here's my todo list:
 
-Known bugs:
-- When selecting songs, the draw() function freezes for a few seconds, longer the bigger the music file. It's supposed to keep working and the songInfo function to handle the unloaded bits of song data on its own with a little loading... animation, but instead the program appears to just freeze until the song is fully loaded.
-- When lyric-ing songs out of order, the menu displaying available songs will just not display a button where the last song was - so the list doesn't get shorter, it just gets holes in it
-
 todo (in order of doing):
-Add volume slider to upper right corner - make it live interactable
 Change esc from quit to pause
 If paused, make esc AND enter AND a clickable menu resume
-Add an options menu as a second pop out window (like preferences in any application) that can display side by side the main window, which lets you alter preferences and view the alterations live
+Add rewinding
 Options menu support for colour scheme changing
-Options menu to enable/disable archiving lyrics
 Add support for non txt/mp3 files (make grid of clickables in options menu where 
              any number can be selected/deselected so that any can be searched)
              
-Button on song selection screen to reselect directory (for misinputs & altering old preferences)
+Button on song selection screen or maybe options menu to reselect directory (for misinputs & altering old preferences)
 Config file to remember preferences (including all options menu things, volume, & originally selected directory)
 
 scroll functionality in the song selection ui if there are too many file available
 arrow key support in song selection ui
   > make this a method for arrow key support in lyric saving/end of song UI
 
-Make the loading screen trigger while waiting for the file to load!!! why is it broken!!!
-  > current patch fix - window title displays the current status of the program
-  
 Make window resizeable/scale to different monitor resolutions
 
 ~do at any time~
 General code cleanup oh my god its such a mess
 Remove redundant variables/unnecessarily complicated code
 Instead of duplicate button code, have a button interactions handler that lets me just create buttons fit to the text size (or that take inputs for x1/y1/width/height)
+
+Known bugs:
+  > When selecting songs, the draw() function freezes for a few seconds, longer the bigger the music file. 
+    It's supposed to keep working and the songInfo function to handle the unloaded bits of song data on its own with 
+    a little loading... animation, but instead the program appears to just freeze until the song is fully loaded.
+  > When lyric-ing songs out of order, the menu displaying available songs will just not display a button where the last song was 
+    so the list doesn't get shorter, it just gets holes in it
+  > If a lyric is too long to display, it runs off screen
