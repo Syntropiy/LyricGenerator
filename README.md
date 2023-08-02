@@ -38,8 +38,12 @@ By default (this can be disabled in options), when the user selects any 'save' o
 Method 1:
 ```
 Run the .java file:
-Use shell/cmd/terminal on your system to navigate to the folder you placed Lyrical.java (ex: 'cd c:\Users\username\Documents\']
-If you want to ensure you're in the correct directory, on windows run 'dir *.java', and check that Lyrical.java appears in the list. On linux/mac, run 'ls *.java'
+Use shell/cmd/terminal on your system to navigate to the folder you placed Lyrical.java 
+  > (ex: 'cd c:\Users\username\Documents\']
+If you want to ensure you're in the correct directory:
+  > on windows run 'dir *.java'
+  > on linux/mac, run 'ls *.java'
+  > check that Lyrical.java appears in the list
 compile the file with: 'javac Lyrical.java'
 run the program with: 'java Lyrical'
 ```
