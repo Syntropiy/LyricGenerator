@@ -3,10 +3,10 @@ a converter that turns unsynchronized .txt files into music synced .lrc files
 
 This is a gradually improving processing sketch originally made between midnight and 6ish am, and now I'm slowly regretting everything i've ever created code wise while adding new features!
 
-###Description:
+### Description:
 Takes an input directory that contains .mp3 files and .txt files, and based on user inputs during audio playback, generates a time-synced .lrc file. Essentially lets the user play a rhythm game to sync up lyrics to songs (or really any text to any audio)
 
-##Controls:
+## Controls:
 ENTER = Advance to next lyric [if lyrics have been input]
 ESC = Exit the program at any time [must not be tapped but truely pressed, key detection is a bit janky]
 Volume Control is a slider in the upper right corner [it actually controls gain, due to issues with the minim library]
@@ -14,11 +14,11 @@ Options - A button in the lower right, that pulls up a menu displaying all optio
     Options menu controls:
     Toggle file archiving - Enables/disables if, after creating the .lrc file, the original .txt file gets moved to a dedicated archive folder
 
-###Song selection:
+### Song selection:
 Upon opening the program, you must select the directory which contains your music.mp3 & text.txt files.
 Once the directory has been selected, if a .mp3 and .txt file share the same name in the directory, they will be displayed on the main window. Click on a song to select it, which will cause the program to freeze while the song is loaded, until the lyrics & certain song information is displayed.
 
-###End of song menu:
+### End of song menu:
 Once the final lyric has been reached, the end of song menu will be displayed. This DOES NOT TRIGGER at the end of a song's playback - it waits on the user.
 Once the menu is open, click the corresponding button to the action you want to do. You can:
     Save the lyrics & select a new one from the same directory
@@ -27,14 +27,14 @@ Once the menu is open, click the corresponding button to the action you want to 
     Re-try the just complete song/lyrics
     Quit without saving
 
-###Syncing a file:
+### Syncing a file:
 The currently playing lyric should be the one of a different colour - by default pink. Creating synced lyrics **is not automatic**, the user *must* click in time to the music to advance to the next lyric. Whatever is highlighted in pink is what will be displayed at that same spot in the song by mp3 players.
 
-#How do certain features work?
-   ##Archiving  
+# How do certain features work?
+   ## Archiving  
 By default (this can be disabled in options), when the user selects any 'save' option at the end of a lyric file, a .lrc will be generated. Then, if there is no existing archive folder in the selected directory, one will be created, and then the original .txt lyrics will be copied into that new folder. If that copied .txt exactly matches the old .txt, then the old .txt in the original directory will be **deleted**. If you do not wish for this to happen, disable archiving in the options menu, and no archive directory will be created or any files be copied.
 
-#How to run the code:
+# How to run the code:
 Method 1:
 ```
 Run the .java file:
@@ -54,11 +54,9 @@ Run from the .exe inside the folder it generates
 
 Little bonus feature: if you don't like the colours i do, you can just edit the colour variables in the java file at the very start of the program, you should be able to infer what the names refer to (or just trial and error it, it's not that bad trust me I trial-and-errored it too)
 
-Anyways this will be my little ongoing pet for a bit, gl getting it to work if you have a use for it! Could be song lyrics, could be subtitles for videos, idrk I just hadn't been able to find something like this online so I made this!
-
-
-For a little sneaksies peaksies at what's coming up, here's my todo list:
-
+# Bugs & Plans
+my own notes for myself, tracking some bugs & next plans
+```
 todo (in order of doing):
 Change esc from quit to pause
 If paused, make esc AND enter AND a clickable menu resume
@@ -88,3 +86,4 @@ Known bugs:
   > When lyric-ing songs out of order, the menu displaying available songs will just not display a button where the last song was 
     so the list doesn't get shorter, it just gets holes in it
   > If a lyric is too long to display, it runs off screen
+```
