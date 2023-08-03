@@ -11,7 +11,7 @@ ENTER = Advance to next lyric [if lyrics have been input]
 ESC = Exit the program at any time [must not be tapped but truely pressed, key detection is a bit janky]
 Volume Control is a slider in the upper right corner [it actually controls gain, due to issues with the minim library]
   #### Options - A button in the lower right, that pulls up a menu displaying all options. Click the button again to close.
-    Options menu controls:
+Options menu controls:
     Toggle file archiving - Enables/disables if, after creating the .lrc file, the original .txt file gets moved to a dedicated archive folder
     Colour variables & sliders - Select a variable by clicking it's button to view its current colour on the swatch (far left side of the menu)
     You can edit the colour of that variable by adjusting the rgb sliders - any changes persist unless manually readjusted or the program is restarted
