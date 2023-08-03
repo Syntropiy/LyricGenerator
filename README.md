@@ -8,7 +8,9 @@ Takes an input directory that contains .mp3 files and .txt files, and based on u
 
 ## Controls:
 ENTER = Advance to next lyric [if lyrics have been input]
+
 ESC = Exit the program at any time [must not be tapped but truely pressed, key detection is a bit janky]
+
 Volume Control is a slider in the upper right corner [it actually controls gain, due to issues with the minim library]
   #### Options - A button in the lower right, that pulls up a menu displaying all options. Click the button again to close.
 Options menu controls:
