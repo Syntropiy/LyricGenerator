@@ -6,7 +6,7 @@ public class Controller{
   }
   int xPos;
   public void songInfo(){
-    fill(textColour);
+    fill(colVars[3]);
     textSize(45);
     String seconds = "Loading...";
     //I have to do it this way because the way that minim handles time metadata is broken
@@ -38,10 +38,10 @@ public class Controller{
       } else {
         xPos = 15;
       }
-      fill(selectionColour);
+      fill(colVars[1]);
       text(songname, xPos, 64);
       textSize(15);
-      fill(selectionColourSecondary);
+      fill(colVars[2]);
       text("By " + meta.author(), 33, 83);
       textSize(20);
 
@@ -59,12 +59,12 @@ public class Controller{
       } else {
         percent = 100;
       }
-      fill(textColourSecondary);
+      fill(colVars[4]);
       text(int(percent) + "%", 6*width/28, 115);
       int percentBar = int((percent/100.0) * (3*width/7));
-      fill(textColour);
+      fill(colVars[3]);
       rect(width/28, 120, 12*width/28, 10, 8);
-      fill(selectionColour);
+      fill(colVars[1]);
       rect(width/28, 120, percentBar, 10, 8);
     } else if (lyrics == null){
       if(songDummy == null && fileSelected){
@@ -77,7 +77,7 @@ public class Controller{
         text("Please Select Song Folder", 25, 50);
         textSize(15);
         text("Ensure each song [.mp3] you wish to give lyrics has a matching .txt file \n which share a directory and filename with the song", 20, 90);
-        fill(selectionColour);
+        fill(colVars[1]);
         text("NOTE: If there is a .lrc for a song already in this directory, saving lyrics that song will overwrite it", 15, 150);
       }
     }
@@ -94,23 +94,23 @@ public class Controller{
     for(int i = a; i < lyr.length; i++){
       //highlight current lyric
       if(i == pos-1){
-        fill(selectionColour);
+        fill(colVars[1]);
         //visibility for instrumental sections
         if(!lyr[i].matches(".*[a-zA-Z]+.*")){
           text("/////////////", x+25, y);
         }
       }
       else{
-        fill(textColour);
+        fill(colVars[3]);
       }
       if(lyrics != null && line == lyrics.length){
-        fill(selectionColour);
+        fill(colVars[1]);
       }
       //show lyrics
       textSize(20);
       text(lyr[i], x+25, y);
       textSize(13);
-      fill(textColourSecondary);
+      fill(colVars[4]);
       if(i > 0){
         text(i + "/" + (lyr.length-1), x-20, y);
       }
@@ -127,22 +127,25 @@ public class Controller{
         elli = "";
       }
     }
-    fill(textColour);
+    fill(colVars[3]);
     text("Loading Song" + elli, 25, 60);
     println("Loading Song" + elli);
   }
   
   public void menuDisplay(String name, int x, int y){
-    fill(buttonColour);
-    if(UIoptionSelected(name, x, y)){
-      fill(selectionColour);
-    }
+    fill(colVars[5]);
+    stroke(colVars[1]);
     textSize(textScale);
+    if(UIoptionSelected(name, x, y)){
+      fill(colVars[1]);
+      stroke(colVars[3]);
+    }
     rect(x-10, y+10, textWidth(name)+10, textScale+10, 0, 10, 10, 0);
-    fill(textColour);
+    fill(colVars[3]);
     text(name, x-5, y+textScale+11);
-    fill(backgroundColour);
-    rect(0, y+10, x-10, textScale+10);
+    fill(colVars[7]);
+    stroke(colVars[7]);
+    rect(0, y+10, x-11, textScale+10);
   }
   
   boolean UIoptionSelected(String name, int x, int y){
@@ -153,7 +156,7 @@ public class Controller{
   }
   
   void volumeSlider(){
-    fill(textColourSecondary);
+    fill(colVars[4]);
     int sliderX = int(width*5.15/7);
     float volumeWidth = volume/50.0 * int(width/4);
     if((mouseX >= sliderX && mouseX <= sliderX+int(width/4)) && ((mouseY < 20 && mouseY > 5 && mousePressed) || (pressing && mousePressed))){
@@ -175,24 +178,23 @@ public class Controller{
     } else {
       pressing = false;
       textSize(14);
-      fill(selectionColourSecondary);
+      fill(colVars[2]);
       String vol = "volume".substring(0, int(6 * volume/50.0 + 0.5));
       String ume = "volume".substring(int(6 * volume/50.0 + 0.5));
       float pos = sliderX + int(width/4)/2 + textWidth("volume")/2;
       text(vol, pos - textWidth("volume"), 30);
-      fill(textColourSecondary);
+      fill(colVars[4]);
       text(ume, pos - textWidth(ume), 30);
     }
     //Volume bar
-    fill(textColourSecondary);
+    fill(colVars[4]);
     rect(sliderX, 10, int(width/4), 7, 4, 4, 4, 4);
     //Volume indicator
-    fill(selectionColourSecondary);
+    fill(colVars[2]);
     circle(sliderX + volumeWidth, 13, 12);
     //Colour aesthetics
-    stroke(selectionColourSecondary);
-    fill(selectionColourSecondary);
+    stroke(colVars[2]);
     rect(sliderX, 10, volumeWidth, 6, 4, 4, 4, 4);
-    stroke(backgroundColour);
+    stroke(colVars[7]);
   }
 }

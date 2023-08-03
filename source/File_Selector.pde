@@ -19,9 +19,11 @@ public class MusicFile{
   
   void fileDisplay(){
     tempName = name;
-    fill(buttonColour);
+    fill(colVars[5]);
+    stroke(colVars[2]);
     if(UIfileSelected() && !menuOpen){
-      fill(selectionColour);
+      fill(colVars[1]);
+      stroke(colVars[3]);
       if(textWidth(name) + tempx > .95*width){
         if(currentMils == 0){
           currentMils = millis();
@@ -36,10 +38,11 @@ public class MusicFile{
     }
     textSize(textScale);
     rect(x-10, y+10, textWidth(name)+10, textScale+10, 0, 10, 10, 0);
-    fill(textColour);
+    fill(colVars[3]);
     text(name, tempx-5, y+textScale+11);
-    fill(backgroundColour);
-    rect(0, y+10, x-10, textScale+10);
+    fill(colVars[7]);
+    stroke(colVars[7]);
+    rect(0, y+10, x-11, textScale+10);
   }
   
   boolean UIfileSelected(){

@@ -2,12 +2,18 @@
 Change esc from quit to pause
 If paused, make esc AND enter AND a clickable menu resume
 Add rewinding
-Options menu support for colour scheme changing
 Add support for non txt/mp3 files (make grid of clickables in options menu where 
              any number can be selected/deselected so that any can be searched)
+Make option selections only alter the config file if a 'save' button is clicked in the options menu
              
+Let user restart the song from any timestamp in the song
+
+Let user edit the .txt lyric file by hand/open it up with a button press if they notice the lyrics are wrong
+Let user edit the to-be-.lrc file by hand if they want to make by hand edits at the end of a song
+   
 Button on song selection screen or maybe options menu to reselect directory (for misinputs & altering old preferences)
 Config file to remember preferences (including all options menu things, volume, & originally selected directory)
+Upon exiting program, generate a log.txt of console so the user can review console events, probably store them wherever the config file will be stored
 
 scroll functionality in the song selection ui if there are too many file available
 arrow key support in song selection ui
@@ -27,6 +33,8 @@ Known bugs:
   > When lyric-ing songs out of order, the menu displaying available songs will just not display a button where the last song was 
     so the list doesn't get shorter, it just gets holes in it
   > If a lyric is too long to display, it runs off screen
+  > Non Latin text displays //// overlayed on top of it, which is not ideal when selected
+  > Menu is inaccessable on the end of song menu
 */
 
 import ddf.minim.*;
@@ -44,6 +52,9 @@ color textColourSecondary = color(150);
 color buttonColour = color(10);
 color menuColour = color(0);
 color backgroundColour = color(30);
+color dummy = color(0);
+color[] colVars = {dummy, selectionColour, selectionColourSecondary, textColour, textColourSecondary, buttonColour, menuColour, backgroundColour};
+String[] colVarNames = {"dummy", "Selection", "Selection (2)", "Text", "Text (2)", "Buttons", "Menu", "Background"};
 
 //Moves from 0 to 50 - my preference is @ 20/30
 float volume = 20;
@@ -90,9 +101,9 @@ void setup(){
 
 //ui
 void draw() {
-  fill(backgroundColour);
-  background(backgroundColour);
-  stroke(backgroundColour);
+  fill(colVars[7]);
+  background(colVars[7]);
+  stroke(colVars[7]);
   
   ui.songInfo();
   
@@ -113,10 +124,10 @@ void draw() {
   
   options.button(clicked);
   
-  fill(buttonColour);
+  fill(colVars[5]);
   rect(0, height-25, width, height);
   textSize(16);
-  fill(textColourSecondary);
+  fill(colVars[4]);
   String controlsExplain = "[ESC] to exit program at any time (without saving)           [ENTER] to advance to next lyric";
   text(controlsExplain, width/2 - textWidth(controlsExplain)/2, height-7);
   
@@ -286,7 +297,7 @@ void selector(){
 
 //Handle end of song menu
 void EoSMenu(){
-  fill(selectionColour);
+  fill(colVars[1]);
   textSize(40);
   text("Lyrics Complete!", 20, 220); 
   int xTemp = xInit+40;
@@ -323,7 +334,7 @@ void songEnd(int a){
     saveStrings(fileName, LyricSync);
     archiveLyrics();
     song.pause();
-    fill(textColour);
+    fill(colVars[3]);
     resetVars();
     if(selection == 2){
       files = new ArrayList<>();
@@ -334,7 +345,7 @@ void songEnd(int a){
   //Restart this song
   else if(selection == 1){
     println("Restarted song");
-    fill(textColour);
+    fill(colVars[3]);
     song.rewind();
     song.pause();
     firstTime = true;
