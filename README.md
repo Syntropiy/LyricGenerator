@@ -12,16 +12,27 @@ ENTER = Advance to next lyric [if lyrics have been input]
 ESC = Exit the program at any time [must not be tapped but truely pressed, key detection is a bit janky]
 
 Volume Control is a slider in the upper right corner [it actually controls gain, due to issues with the minim library]
-  #### Options - A button in the lower right, that pulls up a menu displaying all options. Click the button again to close.
+
+Lyric scrolling: To view future lyrics, scroll while the window is selected. Scrolling beyond the currently selected lyric will cause said lyric to display locked at the top of the lyrics section. 
+  #### Buttons - Button controls are in the lower right of the window
 Options menu controls:
+    To open, click the [^] button once. To close, click [v] (in the same location as the open button).
+ In-menu controls:
     Toggle file archiving - Enables/disables if, after creating the .lrc file, the original .txt file gets moved to a dedicated archive folder
     Colour variables & sliders - Select a variable by clicking it's button to view its current colour on the swatch (far left side of the menu)
     You can edit the colour of that variable by adjusting the rgb sliders - any changes persist unless manually readjusted or the program is restarted
     [variablename] (2) indicates that this is a secondary colour/a variant of a colour. So by default, Selection is pink, and Selection (2) is a darker pink
 
+Lyric editing:
+  To open, click the [T] button, above the options button, once. This will open the lyrics in the default text editor of your system [this may not work for non windows machines - not tested yet]
+  Repeated clicks will open more windows - you need to close the text editor manually each time for now. You must save edits made to the text file, and reload the song using the Reload button for this to have an effect.
+
+Reload button:
+  To run, click the [↺] button once. This will restart the currently playing song from the beginning, and re-fetch the lyrics from the .txt file, applying any edits made to the file after the song was originally selected. If no changes have been made to the file, this will simply restart the song & the lyric tracking from the beginning.
+
 ### Song selection:
 Upon opening the program, you must select the directory which contains your music.mp3 & text.txt files.
-Once the directory has been selected, if a .mp3 and .txt file share the same name in the directory, they will be displayed on the main window. Click on a song to select it, which will cause the program to freeze while the song is loaded, until the lyrics & certain song information is displayed.
+Once the directory has been selected, if a .mp3 and .txt file share the same name in the directory, they will be displayed on the main window. Click on a song to select it, which will cause the program to freeze while the song is loaded, until the lyrics & certain song information is displayed. If the list of songs extends beyond the window's length, scroll down to view more. 
 
 ### End of song menu:
 Once the final lyric has been reached, the end of song menu will be displayed. This DOES NOT TRIGGER at the end of a song's playback - it waits on the user.
@@ -72,18 +83,17 @@ If paused, make esc AND enter AND a clickable menu resume
 Add rewinding
 Add support for non txt/mp3 files (make grid of clickables in options menu where 
              any number can be selected/deselected so that any can be searched)
+Options button for invert scrolling
 Make option selections only alter the config file if a 'save' button is clicked in the options menu
-             
-Let user restart the song from any timestamp in the song
 
-Let user edit the .txt lyric file by hand/open it up with a button press if they notice the lyrics are wrong
+Display function of button floating by mouse when hovering over buttons
+
 Let user edit the to-be-.lrc file by hand if they want to make by hand edits at the end of a song
    
 Button on song selection screen or maybe options menu to reselect directory (for misinputs & altering old preferences)
 Config file to remember preferences (including all options menu things, volume, & originally selected directory)
 Upon exiting program, generate a log.txt of console so the user can review console events, probably store them wherever the config file will be stored
 
-scroll functionality in the song selection ui if there are too many file available
 arrow key support in song selection ui
   > make this a method for arrow key support in lyric saving/end of song UI
 
@@ -100,6 +110,8 @@ Known bugs:
     a little loading... animation, but instead the program appears to just freeze until the song is fully loaded.
   > When lyric-ing songs out of order, the menu displaying available songs will just not display a button where the last song was 
     so the list doesn't get shorter, it just gets holes in it
+  > If a lyric is too long to display, it runs off screen
+  > Menu is inaccessable on the end of song menu
   > If a lyric is too long to display, it runs off screen
   > Non Latin text displays //// overlayed on top of it, which is not ideal when selected
   > Menu is inaccessable on the end of song menu
