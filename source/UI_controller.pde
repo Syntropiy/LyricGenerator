@@ -47,9 +47,9 @@ public class Controller{
 
       text("Lines: " + (lyrics.length-1), 15, 35);
       textSize(30);
-      text(currentMin + ":" + currentSec, 105, 35);
+      text(currentMin + ":" + currentSec, 135, 35);
       textSize(20);
-      text("   /" + seconds, 80+2*textWidth(currentMin + ":" + currentSec), 35);
+      text("   / " + seconds, 145+textWidth(currentMin + ":" + currentSec), 35);
       textSize(25);
       float pos = song.position();
       float len = songDummy.duration()*1000;
@@ -71,6 +71,9 @@ public class Controller{
         loading();
         println("Loading song...");
       } else if(folderSelected){
+        fill(colVars[7]);
+        rect(-2, -2, width+4, 80);
+        fill(colVars[3]);
         text("Please Select Song", 25, 60);
       } else{
         textSize(40);
@@ -85,6 +88,7 @@ public class Controller{
   }
   
   public void lyricDisplay(String[] lyr, int pos, int x, int y){
+    y-=lyrScroll*23;
     textSize(20);
     //keep text in frame
     int a = 0;
@@ -96,7 +100,7 @@ public class Controller{
       if(i == pos-1){
         fill(colVars[1]);
         //visibility for instrumental sections
-        if(!lyr[i].matches(".*[a-zA-Z]+.*")){
+        if(lyr[i].trim().length() == 0){
           text("/////////////", x+25, y);
         }
       }
@@ -115,6 +119,23 @@ public class Controller{
         text(i + "/" + (lyr.length-1), x-20, y);
       }
       y+=23;
+    }
+    fill(colVars[7]);
+    rect(-3, 0, width+6, yInit-19);
+    if(lyrScroll > 0 && pos > 0){
+      fill(colVars[5]);
+      stroke(colVars[1]);
+      rect(-3, yInit-18, width+6, 23);
+      stroke(colVars[7]);
+      textSize(20);
+      fill(colVars[1]);
+      text(lyr[a], x+25, yInit);
+      if(lyr[a].trim().length() == 0){
+        text("/////////////", x+25, yInit);
+      }
+      textSize(13);
+      fill(colVars[4]);
+      text(a + "/" + (lyr.length-1), x-20, yInit);
     }
   }
   

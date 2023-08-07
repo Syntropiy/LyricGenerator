@@ -4,18 +4,17 @@ If paused, make esc AND enter AND a clickable menu resume
 Add rewinding
 Add support for non txt/mp3 files (make grid of clickables in options menu where 
              any number can be selected/deselected so that any can be searched)
+Options button for invert scrolling
 Make option selections only alter the config file if a 'save' button is clicked in the options menu
-             
-Let user restart the song from any timestamp in the song
 
-Let user edit the .txt lyric file by hand/open it up with a button press if they notice the lyrics are wrong
+Display function of button floating by mouse when hovering over buttons
+
 Let user edit the to-be-.lrc file by hand if they want to make by hand edits at the end of a song
    
 Button on song selection screen or maybe options menu to reselect directory (for misinputs & altering old preferences)
 Config file to remember preferences (including all options menu things, volume, & originally selected directory)
 Upon exiting program, generate a log.txt of console so the user can review console events, probably store them wherever the config file will be stored
 
-scroll functionality in the song selection ui if there are too many file available
 arrow key support in song selection ui
   > make this a method for arrow key support in lyric saving/end of song UI
 
@@ -33,7 +32,6 @@ Known bugs:
   > When lyric-ing songs out of order, the menu displaying available songs will just not display a button where the last song was 
     so the list doesn't get shorter, it just gets holes in it
   > If a lyric is too long to display, it runs off screen
-  > Non Latin text displays //// overlayed on top of it, which is not ideal when selected
   > Menu is inaccessable on the end of song menu
 */
 
@@ -85,6 +83,9 @@ int activeFileIndex;
 int xInit = 30;
 int yInit = 150;
 int offTime, currentMin, currentSec, currentMili;
+float scroll = 0;
+int scrollPos = 0;
+int lyrScroll = 0;
 
 void setup(){
   PFont font;
@@ -96,7 +97,6 @@ void setup(){
   ui = new Controller();
   size(675, 900);
   selectFolder("Select directory of music:", "directSelect");
-  //selectInput("Select lyric txt:", "fileSelected");
 }
 
 //ui
@@ -105,10 +105,20 @@ void draw() {
   background(colVars[7]);
   stroke(colVars[7]);
   
-  ui.songInfo();
-  
   if(lyrics != null){
+    if(lyrics.length-line > 30){
+      lyrScroll += int(scroll);
+      if(lyrScroll > lyrics.length-line-31){
+        lyrScroll = lyrics.length-line-31;
+      } else if (lyrScroll < 0){
+        lyrScroll = 0;
+      }
+    } else {
+      lyrScroll = 0;
+    }
+    
     ui.lyricDisplay(lyrics, line, xInit, yInit);
+    scroll = 0;
     if(song != null && song.isPlaying()){
       timeFormat();
       song.setGain(volume-44);
@@ -121,7 +131,7 @@ void draw() {
   } else if(firstTime && !fileSelected){
     selector();
   }
-  
+  ui.songInfo();
   options.button(clicked);
   
   fill(colVars[5]);
@@ -145,33 +155,6 @@ void draw() {
     }
   }
   clicked = false;
-}
-
-//input handling
-void keyPressed() {
-  if(key==ENTER && !firstTime){
-    if(line < lyrics.length){
-      String a = (timeFormat() + lyrics[line]);
-      println(a);
-      lryc[line] = a;
-      line++;
-    }
-  } else if (firstTime && key==ENTER){
-    song.play();
-    String a = (timeFormat() + "");
-    println(a);
-    lryc[line] = a;
-    firstTime = false;
-    line++;
-  }
-  if(key==ESC){
-    if(lyrics != null && line == lyrics.length){
-      String fileName = fName+".lrc";
-      saveStrings(fileName, LyricSync);
-    }
-    surface.setTitle("Quitting Safely...");
-    exit();
-  }
 }
 
 //formats the time tag
@@ -232,18 +215,29 @@ public static List<File> listf(File directoryName) {
   File directory = directoryName;
   
   List<File> resultList = new ArrayList<File>();
+  List<File> resultListCurated = new ArrayList<File>();
 
   // get all the files from a directory
   File[] fList = directory.listFiles(filter);
   resultList.addAll(Arrays.asList(fList));
   for (File file : fList) {
     if (file.isFile()) {
-      //System.out.println(file.getAbsolutePath());
     } else if (file.isDirectory()) {
       resultList.addAll(listf(new File(file.getAbsolutePath())));
     }
   }
-  return resultList;
+  
+  //my own code to ensure only .txts with .mp3s associated are allowed
+  for(int i = 0; i < resultList.size(); i++){
+    File textFile = resultList.get(i);
+    String textFileString = textFile.toString();
+    String textFilePath = textFileString.substring(0, textFileString.length()-4) + ".mp3";
+    if(Paths.get(textFilePath).toFile().exists()){
+      resultListCurated.add(resultList.get(i));
+    }
+  }
+  println(resultListCurated);
+  return resultListCurated;
 }
 
 //file selection code
@@ -271,17 +265,58 @@ void fileSelected(File selection){
   surface.setTitle(selection.getName().substring(0, selection.getName().length()-4));
 }
 
+//input handling
+void keyPressed() {
+  if(key==ENTER && !firstTime){
+    if(line < lyrics.length){
+      String a = (timeFormat() + lyrics[line]);
+      println(a);
+      lryc[line] = a;
+      line++;
+      if(lyrScroll > 0){
+        lyrScroll --;
+      }
+    }
+  } else if (firstTime && key==ENTER){
+    song.play();
+    String a = (timeFormat() + "");
+    println(a);
+    lryc[line] = a;
+    firstTime = false;
+    line++;
+  }
+  if(key==ESC){
+    if(lyrics != null && line == lyrics.length){
+      String fileName = fName+".lrc";
+      saveStrings(fileName, LyricSync);
+    }
+    surface.setTitle("Quitting Safely...");
+    exit();
+  }
+}
+
 void mouseClicked(){
   clicked = true;
+}
+
+void mouseWheel(MouseEvent event){
+  scroll = event.getCount();
 }
 
 void selector(){
   int i = 0;
   int foundClick = 0;
   Boolean fc = false;
+  if(files.size() < 20){
+    scroll = 0;
+  } else if(scrollPos+scroll < 0){
+    scroll = -1 * scrollPos;
+  } else if (scrollPos + scroll + 20 > files.size()){
+    scroll = files.size() - 20 - scrollPos;
+  }
   for(i = 0; i < files.size(); i++){
     MusicFile mf = files.get(i);
-    mf.fileDisplay();
+    mf.fileDisplay(scroll);
     if(clicked && !menuOpen){
       if(mf.UIfileSelected()){
         foundClick = i;
@@ -289,6 +324,8 @@ void selector(){
       }
     }
   }
+  scrollPos += int(scroll);
+  scroll = 0;
   if(fc){
     activeFileIndex = foundClick;
     fileSelected(ls.get(foundClick));

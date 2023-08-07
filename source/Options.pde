@@ -64,7 +64,7 @@ public class Options{
       stroke(colVars[3]);
       openMenu = "v";
       yShift = 4;
-      xShift = int(width-textWidth(openMenu)-11);
+      xShift = int(width-textWidth(openMenu)-7);
     } else {
       menuOpen = false;
       fill(colVars[5]);
@@ -76,6 +76,13 @@ public class Options{
     //println(int(width-textWidth(">")-5));
     textSize(buttonScale);
     menuDisplay(openMenu, xShift, height-buttonScale-45, yShift, mouseReleased);
+    PFont font;
+    font = createFont("Times New Roman", 5);
+    textFont(font);
+    editorOpen("T", int(width-textWidth("T")-5)-6, height-buttonScale-80, 0, mouseReleased);
+    font = createFont("Dialog.plain", 5);
+    textFont(font);
+    reloadButton(int(width-15), height-buttonScale-115, 0, mouseReleased);
   }
   
   //Create colour var selection buttons
@@ -97,9 +104,77 @@ public class Options{
     return colourToChange;
   }
   
+  Boolean allNotMenuButtons(String name, int x, int y, int yShift, Boolean mouseReleased, Boolean tester){
+    Boolean isClicked = false;
+    fill(colVars[5]);
+    stroke(colVars[2]);
+    if(optionSelected("Taaaa", x-6, y-3)){
+      fill(colVars[1]);
+      if(tester){
+        stroke(colVars[3]);
+        if(mouseReleased){
+          isClicked = true;
+        }
+      }
+    }
+    textSize(buttonScale);
+    rect(x-17, y+10, textWidth("T")+10, textWidth("T")+10, 10, 10, 10, 10);
+    fill(colVars[3]);
+    text(name, x-12, y+buttonScale + 9 - yShift);
+    stroke(colVars[7]);
+    return isClicked;
+  }
+  
+  //display text editor button & handle if it's active or not
+  void editorOpen(String name, int x, int y, int yShift, Boolean mouseReleased){
+    if(allNotMenuButtons(name, x, y, yShift, mouseReleased, lyrics != null)){
+      try{
+        java.awt.Desktop.getDesktop().edit(lyricsName);
+      } catch (IOException io){
+        println("Could not open text editor! - file DNE?");
+      }
+    }
+  }
+  
+  void reloadButton(int x, int y, int yShift, Boolean mouseReleased){
+    float iconScale = 11.5;
+    float xOffset = x - 6;
+    float yOffset = y + 22;
+    //Updating lyrics...
+    if(allNotMenuButtons("", x, y, yShift, mouseReleased, lyrics != null)){
+      File selection = lyricsName;
+      if (selection == null){
+        println("Lyric file not found!");
+        exit();
+      }
+      String[] lyrrayPart = loadStrings(selection);
+      lyrics = new String[lyrrayPart.length+1];
+      lyrics[0] = " ";
+      arraycopy(lyrrayPart, 0, lyrics, 1, lyrrayPart.length);
+      lryc = new String[lyrics.length+1];
+      surface.setTitle("Loading...");
+      surface.setTitle(selection.getName().substring(0, selection.getName().length()-4));
+      songEnd(1);
+    }
+    //Oh buddy boy we're drawin a shitty little reload symbol! why the fuck is the entire plane of this program vertically inverted
+    stroke(colVars[3]);
+    strokeWeight(2);
+    noFill();
+    arc(xOffset, yOffset, iconScale, iconScale, 0, 3*HALF_PI);
+    noStroke();
+    strokeWeight(1);
+    fill(colVars[3]);
+    iconScale = 3/ (2*iconScale);
+    xOffset -=6;
+    yOffset -=7;
+    triangle(iconScale * (75 + 12.5) + xOffset, iconScale * (25 - 12.5) + yOffset, 
+             iconScale * (75 - 18) + xOffset, iconScale * (75 - 12.5) + yOffset, 
+             iconScale * (100 + 18) + xOffset, iconScale * (75 - 12.5) + yOffset);
+  }
+  
   //display the options menu button & handle if it's active or not
   void menuDisplay(String name, int x, int y, int yShift, Boolean mouseReleased){
-    if(optionSelected(name, x, y)){
+    if(optionSelected(name, x-6, y-3)){
       fill(colVars[1]);
       if(mouseReleased){
         boo = !boo;
@@ -107,9 +182,9 @@ public class Options{
       }
     }
     textSize(buttonScale);
-    rect(x-10, y+10, textWidth(name)+13, textWidth(name)+13, 10, 10, 10, 10);
+    rect(x-17, y+10, textWidth(name)+13, textWidth(name)+13, 10, 10, 10, 10);
     fill(colVars[3]);
-    text(name, x-3, y+buttonScale+12-yShift);
+    text(name, x-10, y+buttonScale+12-yShift);
     stroke(colVars[7]);
   }
   

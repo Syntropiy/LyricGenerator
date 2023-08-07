@@ -1,5 +1,6 @@
 public class MusicFile{
   int x, y, tempx;
+  float widthLimit = .9*width;
   int currentMils = 0;
   File song;
   String name, tempName;
@@ -17,14 +18,19 @@ public class MusicFile{
     return name;
   }
   
-  void fileDisplay(){
+  void fileDisplay(float yChange){
+    textSize(textScale);
+    y -= int(yChange) * (textScale+18);
+    float tooLong = textWidth(name);
+    color notYet = colVars[5];
+    color notYetStroke = colVars[2];
+    
     tempName = name;
-    fill(colVars[5]);
-    stroke(colVars[2]);
+    
     if(UIfileSelected() && !menuOpen){
-      fill(colVars[1]);
-      stroke(colVars[3]);
-      if(textWidth(name) + tempx > .95*width){
+      notYet = colVars[1];
+      notYetStroke = colVars[3];
+      if(textWidth(name) + tempx > widthLimit){
         if(currentMils == 0){
           currentMils = millis();
         }
@@ -36,17 +42,26 @@ public class MusicFile{
       tempx = x;
       currentMils = 0;
     }
-    textSize(textScale);
-    rect(x-10, y+10, textWidth(name)+10, textScale+10, 0, 10, 10, 0);
+    if(textWidth(name) + x > widthLimit){
+      tooLong = widthLimit - x + 1;
+    }
+    
+    fill(notYet);
+    rect(x-10, y+10, tooLong+10, textScale+10, 0, 10, 10, 0);
     fill(colVars[3]);
     text(name, tempx-5, y+textScale+11);
     fill(colVars[7]);
     stroke(colVars[7]);
     rect(0, y+10, x-11, textScale+10);
+    rect(widthLimit + 2, y+10, width-widthLimit, textScale + 10);
+    fill(0, 0, 0, 0);
+    stroke(notYetStroke);
+    rect(x-10, y+10, tooLong+10, textScale+10, 0, 10, 10, 0);
+    stroke(colVars[7]);
   }
   
   boolean UIfileSelected(){
-    if(mouseX > x-10 && mouseX < x+textWidth(name) && mouseY > y+10 && mouseY < y+10+textScale+10){
+    if(mouseX > x-10 && mouseX < x+textWidth(name) && mouseY > y+10 && mouseY < y+10+textScale+10 && mouseX < widthLimit){
       return true;
     }
     return false;
